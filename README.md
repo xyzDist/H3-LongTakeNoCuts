@@ -1,4 +1,5 @@
 #### H3 LongTakeNoCuts is custom nodes and workflow attempts to fix the infamous degradation issue
+I am using native motion-context example WF on top add and change as minimum, keep the wF as simple as possible. This is not a Director/Extender AIO node. This is low-level nodes and you can use it with you workflow setup.
 ## Minimax-H3 long duration motion-context shot degradation discussion:
 
 Video Examples (with and without refine sample stage):
@@ -11,11 +12,11 @@ Video Examples (with and without refine sample stage):
 Motion-context or latent save/load extend video start to have degradation on segmenets around 5-6, on generation video without cuts. (*if you do cuts in shot, there is no degradation issue)
 Every segment loads the previous latent as ground truth, every generation have some drift and lost, adding up becomes degradation. This is the "copying effect".
 
-## My Solution to H3 Degradation (NOT PERFECT solution)
+## My Solution to H3 Degradation (so far)
 
-### Core Idea: Refine Resample + Frame Blend Latent
+### Core Idea: Refine Resample then Blend it back to Latent.
 1.  **Refine Resample:** 
-    `latent_refine = resample(latent_gen, denoise=0.5-0.6, ref=character_anchor)`
+    - simple additional sample stage, with few steps
     - Denoise 0.5-0.6 restores character details, fixes waxy/burnt and degradation
     - refresh to latent
 
