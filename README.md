@@ -1,39 +1,40 @@
 #### H3 LongTakeNoCuts is custom nodes and workflow attempts to fix the infamous degradation issue
 ## Minimax-H3 long duration motion-context shot degradation discussion:
 
-Video Examples (without and with refine sample):
+Video Examples (with and without refine sample stage):
 
 <img width="547" height="485" alt="image" src="https://github.com/user-attachments/assets/3f0101e6-c150-44fe-a811-94e455d72d82" />
 <img width="1304" height="362" alt="image" src="https://github.com/user-attachments/assets/73ccce81-5be2-4944-bbe9-d7328af36a7d" />
 
 
 ## Why Motion-Context Degrades
-Motion-context or latent save/load extend video start to have degradation on segmenets > 5-6 single no cuts shots.
-Every segment loads the previous latent as ground truth, every segment generation have some drift and lost, This is the "copying effect"
+Motion-context or latent save/load extend video start to have degradation on segmenets around 5-6, on generation video without cuts. (*if you do cuts in shot, there is no degradation issue)
+Every segment loads the previous latent as ground truth, every generation have some drift and lost, adding up becomes degradation. This is the "copying effect".
 
-## My Solution to H3 Copying-Effect Degradation
+## My Solution to H3 Degradation (NOT PERFECT solution)
 
-### Core Idea: Refine Resample + Frame Blend
+### Core Idea: Refine Resample + Frame Blend Latent
 1.  **Refine Resample:** 
     `latent_refine = resample(latent_gen, denoise=0.5-0.6, ref=character_anchor)`
     - Denoise 0.5-0.6 restores character details, fixes waxy/burnt and degradation
     - refresh to latent
 
-2.  **Custom Frame Blend Latent Node (My Node):**
+2.  **Custom Frame Blend Latent Node:**
     keyframe blend **by frames** in latent space:
+    as motion-context is trimming head 22 frames, we blend the current latent to refine latent from 22f-44f (you can change)
 
 
 ### Current Limitations
-This is not perfect yet:
+This is not perfect:
 
 **1. Background Shift / Dissolve Artifact**
 Because we are blending in latent space, the background latent also gets blended. When `latent_gen` and `latent_refine` have slightly different backgrounds (even with same prompt), you see:
-- Background texture popping
+- Background will be change and Perhaps some fine details on character will be change as well.
 - Sometimes a visible dissolve / crossfade in transition area
 
 **TODO / Open Questions:**
-- [ ] How to blend only character latent and keep background 100% from `gen`? Need better masking in latent space, not pixel space.
-- [ ] How to avoid dissolve when background changes? Maybe need background anchor as well.
+- [ ] If we just blend the character with mask, would that better? how worst is the background degradation?
+- [ ] How to avoid dissolve when background changes? even not sure if it is possible.
 
 This solves character degradation well, but background consistency is still the bottleneck. Sharing this approach for feedback.
 
