@@ -17,7 +17,7 @@ Every segment loads the previous latent as ground truth, every generation have s
 ### Core Idea: Refine Resample then Blend it back to Latent.
 1.  **Refine Resample:** 
     - simple additional sample stage, with few steps
-    - Denoise 0.5-0.6 restores character details, fixes waxy/burnt and degradation
+    - denoise 0.5-0.6 restores character details, fixes waxy/burnt and degradation
     - refresh to latent
 
 2.  **Custom Frame Blend Latent Node:**
@@ -26,10 +26,8 @@ Every segment loads the previous latent as ground truth, every generation have s
 
 
 ### Current Limitations
-This is not perfect:
-
-**1. Background Shift / Dissolve Artifact**
-Because we are blending in latent space, the background latent also gets blended. When `latent_gen` and `latent_refine` have slightly different backgrounds (even with same prompt), you see:
+1. Background Shift / Dissolve Artifact**
+Because we do a refine in high denoise value, meaning it will change things, blending new refine back to current generation, When `latent_gen` and `latent_refine` have slightly different backgrounds (even with same prompt), you see:
 - Background will be change and Perhaps some fine details on character will be change as well.
 - Sometimes a visible dissolve / crossfade in transition area
 
