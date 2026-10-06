@@ -45,4 +45,8 @@ https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context  \
 https://github.com/kijai/ComfyUI-KJNodes  \
 https://github.com/yolain/ComfyUI-Easy-Use (optional)
 
+## Installtion
+in custom nodes folder, run 
+```git clone https://github.com/xyzDist/H3-LongTakeNoCuts.git```
+
 
