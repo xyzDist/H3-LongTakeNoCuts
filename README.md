@@ -7,7 +7,7 @@ Video Examples (with and without refine sample stage):
 <a href="https://youtu.be/vqmztq0dMlw">
     <img width="547" height="485" alt="image" src="https://github.com/user-attachments/assets/3f0101e6-c150-44fe-a811-94e455d72d82" />
 </a>
-<a href="https://youtu.be/vqmztq0dMlw">
+<a href="https://youtu.be/CxXeoMoEWNw">
     <img width="1304" height="362" alt="image" src="https://github.com/user-attachments/assets/73ccce81-5be2-4944-bbe9-d7328af36a7d" />
 </a>
 
