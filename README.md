@@ -4,8 +4,12 @@ I am using native motion-context example WF on top add and change as minimum, ke
 
 Video Examples (with and without refine sample stage):
 
-<img width="547" height="485" alt="image" src="https://github.com/user-attachments/assets/3f0101e6-c150-44fe-a811-94e455d72d82" />
-<img width="1304" height="362" alt="image" src="https://github.com/user-attachments/assets/73ccce81-5be2-4944-bbe9-d7328af36a7d" />
+<a href="https://youtu.be/vqmztq0dMlw">
+    <img width="547" height="485" alt="image" src="https://github.com/user-attachments/assets/3f0101e6-c150-44fe-a811-94e455d72d82" />
+</a>
+<a href="https://youtu.be/vqmztq0dMlw">
+    <img width="1304" height="362" alt="image" src="https://github.com/user-attachments/assets/73ccce81-5be2-4944-bbe9-d7328af36a7d" />
+</a>
 
 
 ## Why Motion-Context Degrades
@@ -13,7 +17,6 @@ Motion-context or latent save/load extend video start to have degradation on seg
 Every segment loads the previous latent as ground truth, every generation have some drift and lost, adding up becomes degradation. This is the "copying effect".
 
 ## My Solution to H3 Degradation (so far)
-
 ### Core Idea: Refine Resample then Blend it back to Latent.
 1.  **Refine Resample:** 
     - simple additional sample stage, with few steps
@@ -33,10 +36,13 @@ Because we do a refine in high denoise value, meaning it will change things, ble
 **TODO / Open Questions:**
 - [ ] If we just blend the character with mask, would that better? how worst is the background degradation?
 - [ ] How to avoid dissolve when background changes? even not sure if it is possible.
+- [ ] cooked Audio. We need to see how motion-context deal with this issue.
 
 This solves character degradation well, but background consistency is still the bottleneck. Sharing this approach for feedback.
 
 ## Custom nodes used in the workflow
-https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context
+https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context  \
+https://github.com/kijai/ComfyUI-KJNodes  \
+https://github.com/yolain/ComfyUI-Easy-Use (optional)
 
 
