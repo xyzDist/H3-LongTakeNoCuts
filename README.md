@@ -18,14 +18,13 @@ Every segment loads the previous latent as ground truth, every generation have s
 1.  **Refine Resample:** 
     - simple additional sample stage, with few steps
     - denoise 0.5-0.6 restores character details, fixes waxy/burnt and degradation
-    - refresh to latent
 
 2.  **Custom Frame Blend Latent Node:**
     keyframe blend **by frames** in latent space:
     as motion-context is trimming head 22 frames, we blend the current latent to refine latent from 22f-44f (you can change)
 
 
-### Current Limitations
+## Current Limitations
 1. Background Shift / Dissolve Artifact**
 Because we do a refine in high denoise value, meaning it will change things, blending new refine back to current generation, When `latent_gen` and `latent_refine` have slightly different backgrounds (even with same prompt), you see:
 - Background will be change and Perhaps some fine details on character will be change as well.
@@ -37,5 +36,7 @@ Because we do a refine in high denoise value, meaning it will change things, ble
 
 This solves character degradation well, but background consistency is still the bottleneck. Sharing this approach for feedback.
 
+## Custom nodes used in the workflow
+https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context
 
 
