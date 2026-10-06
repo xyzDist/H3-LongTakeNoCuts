@@ -1,5 +1,5 @@
-#### H3 LongTakeNoCuts is custom nodes and workflow attempts to fix the infamous degradation issue
-I am using native motion-context example WF on top add and change as minimum, keep the WF as simple as possible. This is not a Director/Extender AIO node. This is low-level nodes and you can use it with your own workflow setup.
+# H3 LongTakeNoCuts is a workflow and custom nodes attempts to fix the infamous degradation issue
+I am using native motion-context example WF add and change minimum, keep the WF as simple as possible. This is not a Director/Extender AIO node. This is low-level nodes and you can use it with your own workflow setup.
 ## Minimax-H3 long duration motion-context shot degradation discussion:
 
 Video Examples (with and without refine sample stage):
