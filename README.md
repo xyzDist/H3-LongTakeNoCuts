@@ -11,6 +11,10 @@ Video Examples (with and without refine sample stage):
     <img width="1304" height="362" alt="image" src="https://github.com/user-attachments/assets/73ccce81-5be2-4944-bbe9-d7328af36a7d" />
 </a>
 
+</a>
+<a href="https://youtu.be/lILj1U_oo-A">
+   <img width="1042" height="284" alt="image" src="https://github.com/user-attachments/assets/2b2db659-8829-47ff-b9cf-b01ec8e45e5d" />
+</a>
 
 ## Why Motion-Context Degrades
 Motion-context or latent save/load extend video start to have degradation on segmenets around 5-6, on generation video without cuts. (*if you do cuts in shot, there is no degradation issue)
