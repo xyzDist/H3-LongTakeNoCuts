@@ -7,6 +7,7 @@ Video Examples (with and without refine sample stage):
 [![image](https://github.com/user-attachments/assets/3f0101e6-c150-44fe-a811-94e455d72d82)](https://youtu.be/vqmztq0dMlw)
 [![image](https://github.com/user-attachments/assets/73ccce81-5be2-4944-bbe9-d7328af36a7d)](https://youtu.be/CxXeoMoEWNw)
 [![image](https://github.com/user-attachments/assets/2b2db659-8829-47ff-b9cf-b01ec8e45e5d)](https://youtu.be/lILj1U_oo-A)
+[![image](https://github.com/user-attachments/assets/bd2b44b8-e968-4d28-8294-18b32213f9a4)](https://youtu.be/N1QIYbfLHQ8)
 
 
 ## Why Motion-Context Degrades
