@@ -1,49 +1,59 @@
-# H3 LongTakeNoCuts is a workflow and custom nodes attempts to fix the infamous degradation issue
-I am using native motion-context example WF add and change minimum, keep the WF as simple as possible. This is not a Director/Extender AIO node. This is low-level nodes and you can use it with your own workflow setup.
-## Minimax-H3 long duration motion-context shot degradation discussion:
+# H3 LongTakeNoCuts
 
-Video Examples (with and without refine sample stage):
+A workflow and custom nodes that attempt to fix the infamous degradation issue in MiniMax H3.
+
+Built on top of the native motion-context example workflow with minimal changes, keeping the workflow as simple as possible. This is not a Director / Extender AIO node. It provides low-level nodes that you can integrate into your own workflow.
+
+## MiniMax H3 Long-Duration Motion-Context Shot Degradation
+
+Video Examples (with and without refine sampling):
 
 [![image](https://github.com/user-attachments/assets/3f0101e6-c150-44fe-a811-94e455d72d82)](https://youtu.be/vqmztq0dMlw)
 [![image](https://github.com/user-attachments/assets/73ccce81-5be2-4944-bbe9-d7328af36a7d)](https://youtu.be/CxXeoMoEWNw)
 [![image](https://github.com/user-attachments/assets/2b2db659-8829-47ff-b9cf-b01ec8e45e5d)](https://youtu.be/lILj1U_oo-A)
 [![image](https://github.com/user-attachments/assets/bd2b44b8-e968-4d28-8294-18b32213f9a4)](https://youtu.be/N1QIYbfLHQ8)
 
-
 ## Why Motion-Context Degrades
-Motion-context or latent save/load extend video start to have degradation on segmenets around 5-6, on generation video without cuts. (*if you do cuts in shot, there is no degradation issue)
-Every segment loads the previous latent as ground truth, every generation have some drift and lost, adding up becomes degradation. This is the "copying effect".
 
-## My Solution to H3 Degradation (so far)
-### Core Idea: Refine Resample then Blend it back to Latent.
-1.  **Refine Resample:** 
-    - simple additional sample stage, with few steps
-    - denoise 0.5-0.6 restores character details, fixes waxy/burnt and degradation
+When using motion-context or latent save/load to extend a video without cuts, degradation starts to appear around segments 5-6. (*If you use cuts, there is no degradation issue)
 
-2.  **Custom Frame Blend Latent Node:**
-    keyframe blend **by frames** in latent space:
-    as motion-context is trimming head 22 frames, we blend the current latent to refine latent from 22f-44f (you can change)
+Each segment loads the previous latent as ground truth. Every generation introduces a small amount of drift and detail loss, which accumulates over time. This is the "photocopy effect".
 
+## My Solution to H3 Degradation (So Far)
+
+### Core Idea: add additional Resample (Refine), then Blend Back into Latent.
+
+1. **Refine Resample:**
+   - An additional sampling stage with only a few steps.
+   - Denoising at 0.5-0.6 restores character details and fixes waxy / burnt look and degradation.
+
+2. **Custom Frame Blend Latent Node:**
+   Keyframe blending **by frames** in latent space.
+   Since motion-context trims the first 22 frames, we blend the current latent into the refined latent from frame 22-44 (adjustable).
+
+## Workflow:
+<img width="2937" height="1064" alt="image" src="https://github.com/user-attachments/assets/e5e1e61e-d986-493b-888e-f0a9e9f7beb5" />
 
 ## Current Limitations
-1. Background Shift / Dissolve Artifact**
-Because we do a refine in high denoise value, meaning it will change things, blending new refine back to current generation, When `latent_gen` and `latent_refine` have slightly different backgrounds (even with same prompt), you see:
-- Background will be change and Perhaps some fine details on character will be change as well.
-- Sometimes a visible dissolve / crossfade in transition area
+
+**1. Background Shift / Dissolve Artifact**
+
+Because the refine pass uses a high denoise value, it will change things. When blending the new refined latent back into the current generation, if `latent_gen` and `latent_refine` have slightly different backgrounds (even with the same prompt), you will see:
+- Background shifts and some fine details on the character may also change.
+- Sometimes a visible dissolve / crossfade in the transition area.
 
 **TODO / Open Questions:**
-- [ ] I've tried latent noise-mask, so we just to refine the character instead of the background. (perhaps only works better with moving shots)
-- [ ] cooked Audio. We need to see how motion-context deal with this issue.
+- [ ] I tried using a latent noise-mask to refine only the character and not the background. (Might work better with moving shots)
+- [ ] Audio artifacts. We need to check how motion-context handles audio in this case.
 
-This fix character degradation well, but background dissolve or changes could be a problem.
+This fixes character degradation well, but background dissolve / changes can still be an issue.
 
-## Custom nodes used in the workflow
-https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context  \
-https://github.com/kijai/ComfyUI-KJNodes  \
+## Custom Nodes Used in the Workflow
+https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context \
+https://github.com/kijai/ComfyUI-KJNodes \
 https://github.com/yolain/ComfyUI-Easy-Use (optional)
 
 ## Installation
-in custom nodes folder, run 
-```git clone https://github.com/xyzDist/H3-LongTakeNoCuts.git```
-
-
+In your `custom_nodes` folder, run:
+```bash
+git clone https://github.com/xyzDist/H3-LongTakeNoCuts.git
