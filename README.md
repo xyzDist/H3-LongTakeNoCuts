@@ -34,7 +34,11 @@ Each segment loads the previous latent as ground truth. Every generation introdu
 ## Workflow:
 <img width="2937" height="1064" alt="image" src="https://github.com/user-attachments/assets/e5e1e61e-d986-493b-888e-f0a9e9f7beb5" />
 
-## Current Limitations
+## Nodes: 
+<img width="256" height="256" alt="image" src="https://github.com/user-attachments/assets/f4121897-00ca-44d0-8fdb-bdd404c4051f" />
+
+
+## Current Limitations:
 
 **1. Background Shift / Dissolve Artifact**
 
