@@ -32,11 +32,10 @@ Because we do a refine in high denoise value, meaning it will change things, ble
 - Sometimes a visible dissolve / crossfade in transition area
 
 **TODO / Open Questions:**
-- [ ] If we just blend the character with mask, would that better? how worst is the background degradation?
-- [ ] How to avoid dissolve when background changes? even not sure if it is possible.
+- [ ] I've tried latent noise-mask, so we just to refine the character instead of the background. (perhaps only works better with moving shots)
 - [ ] cooked Audio. We need to see how motion-context deal with this issue.
 
-This solves character degradation well, but background consistency is still the bottleneck. Sharing this approach for feedback.
+This fix character degradation well, but background dissolve or changes could be a problem.
 
 ## Custom nodes used in the workflow
 https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context  \
