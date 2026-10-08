@@ -4,18 +4,10 @@ I am using native motion-context example WF add and change minimum, keep the WF 
 
 Video Examples (with and without refine sample stage):
 
-<a href="https://youtu.be/vqmztq0dMlw" target="_blank" rel="noopener noreferrer">
-    <img width="547" height="485" alt="image" src="https://github.com/user-attachments/assets/3f0101e6-c150-44fe-a811-94e455d72d82" />
-</a>
+[![image](https://github.com/user-attachments/assets/3f0101e6-c150-44fe-a811-94e455d72d82)](https://youtu.be/vqmztq0dMlw)
+[![image](https://github.com/user-attachments/assets/73ccce81-5be2-4944-bbe9-d7328af36a7d)](https://youtu.be/CxXeoMoEWNw)
+[![image](https://github.com/user-attachments/assets/2b2db659-8829-47ff-b9cf-b01ec8e45e5d)](https://youtu.be/lILj1U_oo-A)
 
-<a href="https://youtu.be/CxXeoMoEWNw" target="_blank" rel="noopener noreferrer">
-    <img width="1304" height="362" alt="image" src="https://github.com/user-attachments/assets/73ccce81-5be2-4944-bbe9-d7328af36a7d" />
-</a>
-
-</a>
-<a href="https://youtu.be/lILj1U_oo-A" target="_blank" rel="noopener noreferrer">
-   <img width="1042" height="284" alt="image" src="https://github.com/user-attachments/assets/2b2db659-8829-47ff-b9cf-b01ec8e45e5d" />
-</a>
 
 ## Why Motion-Context Degrades
 Motion-context or latent save/load extend video start to have degradation on segmenets around 5-6, on generation video without cuts. (*if you do cuts in shot, there is no degradation issue)
