@@ -1,48 +1,24 @@
 import torch
+import torch.nn.functional as torchF
 import math
 import comfy.nested_tensor
-
 
 class H3BlendLatentsByFrames:
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "latent1": ("LATENT", {
-                    "description": "Latent 1（0 = 純 latent1）"
-                }),
-                "latent2": ("LATENT", {
-                    "description": "Latent 2（1 = 純 latent2）"
-                }),
-                "keyframes": ("STRING", {
-                    "default": "0:0, 22:0, 44:1",
-                    "multiline": False,
-                    "placeholder": "例如: 0:0, 22:0, 44:1（幀號:比例 0=latent1, 1=latent2）"
-                }),
-                "duration": ("FLOAT", {
-                    "default": 8.0,
-                    "min": 0.1,
-                    "max": 3600.0,
-                    "step": 0.1,
-                }),
-                "fps": ("FLOAT", {
-                    "default": 24.0,
-                    "min": 1.0,
-                    "max": 240.0,
-                    "step": 1.0,
-                }),
-                "interpolation": (["linear", "smooth"], {
-                    "default": "smooth"
-                }),
-                "audio_source": (["latent1", "latent2"], {
-                    "default": "latent1",
-                    "tooltip": "當 blend_audio 關閉時，選擇使用邊個 latent 嘅 audio（refine 階段建議揀 latent1 避免音質受損）"
-                }),
-                "blend_audio": ("BOOLEAN", {
-                    "default": False,
-                    "label_on": "enable",
-                    "label_off": "disable",
-                }),
+                "latent1": ("LATENT", {"description": "Latent 1"}),
+                "latent2": ("LATENT", {"description": "Latent 2"}),
+                "keyframes": ("STRING", {"default": "0:0, 22:0, 44:1", "multiline": False}),
+                "duration": ("FLOAT", {"default": 8.0, "min": 0.1, "max": 3600.0, "step": 0.1}),
+                "fps": ("FLOAT", {"default": 24.0, "min": 1.0, "max": 240.0, "step": 1.0}),
+                "interpolation": (["linear", "smooth"], {"default": "linear"}),
+                "audio_source": (["latent1", "latent2"], {"default": "latent1"}),
+                "blend_audio": ("BOOLEAN", {"default": False}),
+            },
+            "optional": {
+                "mask": ("MASK",),
             }
         }
 
@@ -58,117 +34,135 @@ class H3BlendLatentsByFrames:
         elif isinstance(samples, (list, tuple)):
             video, audio = samples[0], samples[1]
         else:
-            raise ValueError(f"[H3Blend] 唔支援嘅 samples 類型: {type(samples)}")
+            raise ValueError(f"Unsupported {type(samples)}")
         if video.ndim == 4:
             video = video.unsqueeze(0)
         if audio.ndim == 3:
             audio = audio.unsqueeze(0)
         return video, audio
 
-    def parse_keyframes(self, keyframes_str, total_frames, pixel_total_frames, interpolation):
+    def parse_keyframes(self, k_str, total_frames, pixel_total_frames, interp):
         pairs = []
-        for part in keyframes_str.split(","):
+        for part in k_str.split(","):
             part = part.strip()
             if not part or ":" not in part:
                 continue
-            frame_str, value_str = part.split(":", 1)
             try:
-                pixel_frame = int(frame_str.strip())
-                value = float(value_str.strip())
-            except ValueError:
+                pf, v = part.split(":", 1)
+                pairs.append((int(pf.strip()), float(v.strip())))
+            except:
                 continue
-            pairs.append((pixel_frame, value))
-
         if not pairs:
-            print("[H3Blend] ⚠️ 冇有效 keyframe，全部幀設為 0（純 latent1）")
             return [0.0] * total_frames
-
         pairs.sort(key=lambda x: x[0])
-
         ratio = total_frames / max(1, pixel_total_frames)
         latent_pairs = []
-        for pixel_frame, value in pairs:
-            latent_frame = int(round(pixel_frame * ratio))
-            latent_frame = max(0, min(latent_frame, total_frames - 1))
-            latent_pairs.append((latent_frame, value))
-
+        for p, v in pairs:
+            lf = int(round(p * ratio))
+            lf = max(0, min(total_frames - 1, lf))
+            latent_pairs.append((lf, v))
         dedup = {}
         for f, v in latent_pairs:
             dedup[f] = v
         latent_pairs = sorted(dedup.items())
-
         if latent_pairs[0][0] > 0:
             latent_pairs.insert(0, (0, latent_pairs[0][1]))
-
-        values = []
+        vals = []
         for i in range(total_frames):
-            prev_frame, prev_val = latent_pairs[0]
-            next_frame, next_val = latent_pairs[-1]
+            pf, pv = latent_pairs[0]
+            nf, nv = latent_pairs[-1]
             for j in range(len(latent_pairs)):
                 if latent_pairs[j][0] <= i:
-                    prev_frame, prev_val = latent_pairs[j]
+                    pf, pv = latent_pairs[j]
                 if latent_pairs[j][0] >= i:
-                    next_frame, next_val = latent_pairs[j]
+                    nf, nv = latent_pairs[j]
                     break
-
-            if next_frame == prev_frame:
+            if nf == pf:
                 t = 0.0
             else:
-                t = (i - prev_frame) / (next_frame - prev_frame)
+                t = (i - pf) / (nf - pf)
+            if interp == "smooth":
+                t = 0.5 * (1 - math.cos(math.pi * t))
+            vals.append(pv + (nv - pv) * t)
+        return vals
 
-            if interpolation == "linear":
-                factor = t
-            elif interpolation == "smooth":
-                factor = 0.5 * (1 - math.cos(math.pi * t))
+    def _prepare_mask(self, mask, B, T, H, W, device, dtype):
+        if mask is None:
+            return None
+        # pyright: reportAttributeAccessIssue=false
+        if mask.dim() == 2:
+            mask = mask.unsqueeze(0).unsqueeze(0)  # [1,1,H,W]
+        elif mask.dim() == 3:
+            mask = mask.unsqueeze(0)  # [1,F,H,W] - Comfy video mask is [F,H,W]
+
+        b, f, mh, mw = mask.shape
+
+        # 1. Spatial downscale FIRST on CPU to avoid 51GB alloc
+        if mh != H or mw != W:
+            tmp = mask.reshape(b * f, 1, mh, mw).float().cpu()
+            tmp = torchF.interpolate(tmp, size=(H, W), mode='bilinear', align_corners=False)
+            mask = tmp.reshape(b, f, H, W)
+
+        # 2. Temporal interpolation after spatial is tiny
+        if f != T:
+            if f == 1:
+                mask = mask.repeat(1, T, 1, 1)
             else:
-                factor = t
+                new_masks = []
+                for bi in range(b):
+                    m = mask[bi]  # [F,H,W]
+                    m = m.permute(1, 2, 0)  # [H,W,F]
+                    m = m.reshape(H * W, 1, f).float()
+                    m = torchF.interpolate(m, size=T, mode='linear', align_corners=False)
+                    m = m.reshape(H, W, T).permute(2, 0, 1)  # [T,H,W]
+                    new_masks.append(m)
+                mask = torch.stack(new_masks, dim=0)
 
-            values.append(prev_val + (next_val - prev_val) * factor)
+        # 3. Batch
+        if b == 1 and B > 1:
+            mask = mask.repeat(B, 1, 1, 1)
+        elif b != B:
+            if b > B:
+                mask = mask[:B]
+            else:
+                mask = mask.repeat((B + b - 1) // b, 1, 1, 1)[:B]
 
-        return values
+        return mask.to(device=device, dtype=dtype).clamp(0, 1)
 
-    def blend(self, latent1, latent2, keyframes, duration, fps, interpolation, audio_source, blend_audio):
+    def blend(self, latent1, latent2, keyframes, duration, fps, interpolation, audio_source, blend_audio, mask=None):
         video1, audio1 = self._unpack(latent1)
         video2, audio2 = self._unpack(latent2)
-
         if video1.shape != video2.shape:
-            raise ValueError(
-                f"[H3Blend] 兩個 latent 形狀唔同: "
-                f"{tuple(video1.shape)} vs {tuple(video2.shape)}"
-            )
+            raise ValueError(f"Shape mismatch {video1.shape} vs {video2.shape}")
 
-        B, C, F, H, W = video1.shape
+        B, C, T, H, W = video1.shape
         pixel_total_frames = int(round(duration * fps))
+        factors = self.parse_keyframes(keyframes, T, pixel_total_frames, interpolation)
 
-        factors = self.parse_keyframes(keyframes, F, pixel_total_frames, interpolation)
+        mask_latent = self._prepare_mask(mask, B, T, H, W, video1.device, video1.dtype)
 
         video_blended = torch.zeros_like(video1)
-        for i, f in enumerate(factors):
-            video_blended[:, :, i, :, :] = video1[:, :, i, :, :] * (1 - f) + video2[:, :, i, :, :] * f
+        for i, fv in enumerate(factors):
+            if mask_latent is not None:
+                m = mask_latent[:, i, :, :].unsqueeze(1)  # [B,1,H,W]
+                eff = fv * m
+                video_blended[:, :, i, :, :] = video1[:, :, i, :, :] * (1 - eff) + video2[:, :, i, :, :] * eff
+            else:
+                video_blended[:, :, i, :, :] = video1[:, :, i, :, :] * (1 - fv) + video2[:, :, i, :, :] * fv
 
         if blend_audio:
-            audio_T = audio1.shape[-1]
-            audio_blended = torch.zeros_like(audio1)
-            for t in range(audio_T):
-                video_idx = int(round(t / max(1, audio_T - 1) * (F - 1)))
-                f = factors[video_idx]
-                audio_blended[..., t] = audio1[..., t] * (1 - f) + audio2[..., t] * f
-            audio_mode_str = "已混合 (mixed)"
+            aT = audio1.shape[-1]
+            ab = torch.zeros_like(audio1)
+            for t in range(aT):
+                idx = int(round(t / max(1, aT - 1) * (T - 1)))
+                fv = factors[idx]
+                ab[..., t] = audio1[..., t] * (1 - fv) + audio2[..., t] * fv
         else:
-            if audio_source == "latent1":
-                audio_blended = audio1
-                audio_mode_str = "直接使用 latent1"
-            else:
-                audio_blended = audio2
-                audio_mode_str = "直接使用 latent2"
+            ab = audio1 if audio_source == "latent1" else audio2
 
-        output = dict(latent2)
-        output["samples"] = comfy.nested_tensor.NestedTensor((video_blended, audio_blended))
-        output.pop("noise_mask", None)
+        out = dict(latent2)
+        out["samples"] = comfy.nested_tensor.NestedTensor((video_blended, ab))
+        out.pop("noise_mask", None)
 
-        print(f"[H3Blend] 🎬 {duration}s × {fps} = {pixel_total_frames} 幀")
-        print(f"[H3Blend] 🎯 Keyframes: {keyframes}")
-        print(f"[H3Blend] 🔊 Audio: {audio_mode_str}")
-        print(f"[H3Blend] ✅ 完成")
-
-        return (output,)
+        print(f" ✅ blend done T={T} mask={tuple(mask_latent.shape) if mask_latent is not None else None}")
+        return (out,)
