@@ -33,11 +33,12 @@ Each segment loads the previous latent as ground truth. Every generation introdu
 
 ## Workflow:
 <img width="2937" height="1064" alt="image" src="https://github.com/user-attachments/assets/e5e1e61e-d986-493b-888e-f0a9e9f7beb5" />
-<img width="684" height="294" alt="image" src="https://github.com/user-attachments/assets/16ffd461-2911-4e68-bfc8-f5d099d95aa3" />
+<img width="342" height="147" alt="image" src="https://github.com/user-attachments/assets/16ffd461-2911-4e68-bfc8-f5d099d95aa3" />
 
 ## Nodes: 
-<img width="256" height="256" alt="image" src="https://github.com/user-attachments/assets/f4121897-00ca-44d0-8fdb-bdd404c4051f" />
+<img width="256" height="256" alt="image" src="https://github.com/user-attachments/assets/f4121897-00ca-44d0-8fdb-bdd404c4051f" />  
 
+` 0:0, 22:0, 44:1 ` it means 0-22f still current latent, blend to refine latent from 22f to 44f. You can change how fast or slow depends you needs.
 
 ## Current Limitations:
 
