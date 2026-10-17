@@ -4,10 +4,17 @@ A workflow and custom nodes that attempt to fix the infamous degradation issue i
 
 Built on top of the native motion-context example workflow with minimal changes, keeping the workflow as simple as possible. This is not a Director / Extender AIO node. It provides low-level nodes that you can integrate into your own workflow.
 
+<details>
+<summary>撳我展開/收埋</summary>
+呢度就係你收埋咗嘅內容，咩都得：
+- 支援 markdown
+- 支援 code
+- 支援圖片
+</details>
+
 ## MiniMax H3 Long-Duration Motion-Context Shot Degradation
-Masking + Refine >> Video Examples:  
+Character Masking + Refine >> Video Examples:  
 3 mins duration oner shot  
-<img width="580" height="328" alt="image" src="https://github.com/user-attachments/assets/8b3b67ad-6ef1-44c4-8b09-ecc4137d0b3d" />
 [![image](https://github.com/user-attachments/assets/8b3b67ad-6ef1-44c4-8b09-ecc4137d0b3d)](https://youtu.be/Ktp9U1JI-LA)
 
 No Masking Refine >> Video Examples (with and without refine sampling):  
