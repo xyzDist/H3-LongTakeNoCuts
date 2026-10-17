@@ -6,6 +6,8 @@ Built on top of the native motion-context example workflow with minimal changes,
 
 ## MiniMax H3 Long-Duration Motion-Context Shot Degradation
 Masking + Refine >> Video Examples:  
+3 mins duration oner shot  
+<img width="580" height="328" alt="image" src="https://github.com/user-attachments/assets/8b3b67ad-6ef1-44c4-8b09-ecc4137d0b3d" />
 
 
 No Masking Refine >> Video Examples (with and without refine sampling):  
