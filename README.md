@@ -5,9 +5,10 @@ A workflow and custom nodes that attempt to fix the infamous degradation issue i
 Built on top of the native motion-context example workflow with minimal changes, keeping the workflow as simple as possible. This is not a Director / Extender AIO node. It provides low-level nodes that you can integrate into your own workflow.
 
 ## MiniMax H3 Long-Duration Motion-Context Shot Degradation
+Masking + Refine >> Video Examples:  
 
-Video Examples (with and without refine sampling):
 
+No Masking Refine >> Video Examples (with and without refine sampling):  
 [![image](https://github.com/user-attachments/assets/3f0101e6-c150-44fe-a811-94e455d72d82)](https://youtu.be/vqmztq0dMlw)
 [![image](https://github.com/user-attachments/assets/73ccce81-5be2-4944-bbe9-d7328af36a7d)](https://youtu.be/CxXeoMoEWNw)
 [![image](https://github.com/user-attachments/assets/2b2db659-8829-47ff-b9cf-b01ec8e45e5d)](https://youtu.be/lILj1U_oo-A)
