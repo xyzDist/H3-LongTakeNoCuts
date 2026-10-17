@@ -4,24 +4,16 @@ A workflow and custom nodes that attempt to fix the infamous degradation issue i
 
 Built on top of the native motion-context example workflow with minimal changes, keeping the workflow as simple as possible. This is not a Director / Extender AIO node. It provides low-level nodes that you can integrate into your own workflow.
 
-<details>
-<summary>撳我展開/收埋</summary>
-呢度就係你收埋咗嘅內容，咩都得：
-- 支援 markdown
-- 支援 code
-- 支援圖片
-</details>
-
 ## MiniMax H3 Long-Duration Motion-Context Shot Degradation
-Character Masking + Refine >> Video Examples:  
-3 mins duration oner shot  
-[![image](https://github.com/user-attachments/assets/8b3b67ad-6ef1-44c4-8b09-ecc4137d0b3d)](https://youtu.be/Ktp9U1JI-LA)
-
-No Masking Refine >> Video Examples (with and without refine sampling):  
+No Masking + Refine >> Video Examples (with and without refine sampling):  
 [![image](https://github.com/user-attachments/assets/3f0101e6-c150-44fe-a811-94e455d72d82)](https://youtu.be/vqmztq0dMlw)
 [![image](https://github.com/user-attachments/assets/73ccce81-5be2-4944-bbe9-d7328af36a7d)](https://youtu.be/CxXeoMoEWNw)
 [![image](https://github.com/user-attachments/assets/2b2db659-8829-47ff-b9cf-b01ec8e45e5d)](https://youtu.be/lILj1U_oo-A)
 [![image](https://github.com/user-attachments/assets/bd2b44b8-e968-4d28-8294-18b32213f9a4)](https://youtu.be/N1QIYbfLHQ8)
+
+Character Masking + Refine >> Video Examples:  
+3 mins duration oner shot  
+[![image](https://github.com/user-attachments/assets/8b3b67ad-6ef1-44c4-8b09-ecc4137d0b3d)](https://youtu.be/Ktp9U1JI-LA)
 
 ## Why Motion-Context Degrades
 
@@ -29,17 +21,28 @@ When using motion-context or latent save/load to extend a video without cuts, de
 
 Each segment loads the previous latent as ground truth. Every generation introduces a small amount of drift and detail loss, which accumulates over time. This is the "photocopy effect".
 
-## My Solution to H3 Degradation (So Far)
+## My Solution to H3 Degradation
+
+<details>
+<summary> My posts in Reddit for more information </summary>
+https://www.reddit.com/r/StableDiffusion/comments/1x6jui1/h3_longtakenocuts_straight_3mins_video_case_study/  
+https://www.reddit.com/r/StableDiffusion/comments/1x0nbr5/h3_degradation_my_turn_attempts_to_fixing/  
+https://www.reddit.com/r/StableDiffusion/comments/1wo1iqw/h3_oneshotnocuts_new_test/  
+https://www.reddit.com/r/StableDiffusion/comments/1wdkdvi/motioncontext_degradation_discussion_summon_sad/  
+
+</details>
 
 ### Core Idea: add additional Resample (Refine), then Blend Back into Latent.
-
 1. **Refine Resample:**
    - An additional sampling stage with only a few steps.
    - Denoising at 0.5-0.6 restores character details and fixes waxy / burnt look and degradation.
+   - We generate character mask by SAM3, and feed to 
 
 2. **Custom Frame Blend Latent Node:**
    Keyframe blending **by frames** in latent space.
    Since motion-context trims the first 22 frames, we blend the current latent into the refined latent from frame 22-44 (adjustable).
+
+
 
 ## Workflow:
 <img width="2937" height="1064" alt="image" src="https://github.com/user-attachments/assets/e5e1e61e-d986-493b-888e-f0a9e9f7beb5" />
@@ -59,7 +62,7 @@ Because the refine pass uses a high denoise value, it will change things. When b
 - Sometimes a visible dissolve / crossfade in the transition area.
 
 **TODO / Open Questions:**
-- [ ] I tried using a latent noise-mask to refine only the character and not the background. (Might work better with moving shots)
+- [x] I tried using a latent noise-mask to refine only the character and not the background. (Might work better with moving shots)
 - [ ] Audio artifacts. We need to check how motion-context handles audio in this case.
 
 This fixes character degradation well, but background dissolve / changes can still be an issue.
