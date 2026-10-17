@@ -13,7 +13,9 @@ No Masking + Refine >> Video Examples (with and without refine sampling):
 
 Character Masking + Refine >> Video Examples:  
 3 mins duration oner shot  
-[![image](https://github.com/user-attachments/assets/8b3b67ad-6ef1-44c4-8b09-ecc4137d0b3d)](https://youtu.be/Ktp9U1JI-LA)
+[![image](https://github.com/user-attachments/assets/8b3b67ad-6ef1-44c4-8b09-ecc4137d0b3d)](https://youtu.be/Ktp9U1JI-LA)  
+[![image](https://github.com/user-attachments/assets/4fe60d9d-a16d-4317-a404-da80327d6345)](https://www.youtube.com/watch?v=Zt1ukAOKOfg)  
+
 
 ## Why Motion-Context Degrades
 
@@ -72,7 +74,6 @@ make sure checking the H3 motion context node is from 'comfyui-h3-motion-context
 as I know if you install other forked like 'ComfyUI-H3-Motion-Context-MultiRef' will cause using the wrong node and throw error.
 Make sure it is from **NikoDemon80**  
 <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/27d96f76-6b41-422f-9880-98a52c9a73d0" />
-
 
 
 
