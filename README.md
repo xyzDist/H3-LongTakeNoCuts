@@ -8,7 +8,7 @@ Built on top of the native motion-context example workflow with minimal changes,
 Masking + Refine >> Video Examples:  
 3 mins duration oner shot  
 <img width="580" height="328" alt="image" src="https://github.com/user-attachments/assets/8b3b67ad-6ef1-44c4-8b09-ecc4137d0b3d" />
-
+[![image](https://github.com/user-attachments/assets/8b3b67ad-6ef1-44c4-8b09-ecc4137d0b3d)](https://youtu.be/Ktp9U1JI-LA)
 
 No Masking Refine >> Video Examples (with and without refine sampling):  
 [![image](https://github.com/user-attachments/assets/3f0101e6-c150-44fe-a811-94e455d72d82)](https://youtu.be/vqmztq0dMlw)
