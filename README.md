@@ -55,10 +55,12 @@ Because the refine pass uses a high denoise value, it will change things. When b
 This fixes character degradation well, but background dissolve / changes can still be an issue.
 
 ## *** Caution!! ***
-make sure checking the H3 motion context node is from 'comfyui-h3-motion-context' (see the little green box)
-<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/27d96f76-6b41-422f-9880-98a52c9a73d0" />
+make sure checking the H3 motion context node is from 'comfyui-h3-motion-context' (see the little green box),
 as I know if you install other forked like 'ComfyUI-H3-Motion-Context-MultiRef' will cause using the wrong node and throw error.
 Make sure it is from **NikoDemon80**
+<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/27d96f76-6b41-422f-9880-98a52c9a73d0" />
+
+
 
 
 ## Custom Nodes Used in the Workflow
