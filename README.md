@@ -60,18 +60,14 @@ https://www.reddit.com/r/StableDiffusion/comments/1wdkdvi/motioncontext_degradat
 [ **Blend Latent By Frames** ] ` 0:0, 22:0, 44:1 ` it means 0-22f still current latent, blend to refine latent from 22f to 44f. You can change how fast or slow depends you needs.
 
 ## Current Limitations:
-
-**1. Background Shift / Dissolve Artifact**
-
-Because the refine pass uses a high denoise value, it will change things. When blending the new refined latent back into the current generation, if `latent_gen` and `latent_refine` have slightly different backgrounds (even with the same prompt), you will see:
-- Background shifts and some fine details on the character may also change.
-- Sometimes a visible dissolve / crossfade in the transition area.
+**It's not a real regen or new fresh latent fix**  
+This is a workaround with easier implement to setup, It helps to bring down the degradation to minimum, works very well with moving shots.
+but for half and static shots, the subject still will drift to higher contrast and saturation.
 
 **TODO / Open Questions:**
-- [x] I tried using a latent noise-mask to refine only the character and not the background. (Might work better with moving shots)
+- [x] ~~I tried using a latent noise-mask to refine only the character and not the background. (Might work better with moving shots)~~
 - [ ] Audio artifacts. We need to check how motion-context handles audio in this case.
 
-This fixes character degradation well, but background dissolve / changes can still be an issue.
 
 ## *** Caution!! ***
 make sure checking the H3 motion context node is from 'comfyui-h3-motion-context' (see the little green box),
