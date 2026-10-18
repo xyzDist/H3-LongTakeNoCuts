@@ -52,9 +52,12 @@ https://www.reddit.com/r/StableDiffusion/comments/1wdkdvi/motioncontext_degradat
 <img width="342" height="147" alt="image" src="https://github.com/user-attachments/assets/16ffd461-2911-4e68-bfc8-f5d099d95aa3" />
 
 ## Nodes: 
+<img width="203" height="160" alt="image" src="https://github.com/user-attachments/assets/c2749be3-f148-41d9-951d-086a08d4302d" />
+<img width="211" height="130" alt="image" src="https://github.com/user-attachments/assets/081a14d2-481a-401d-a298-1397136b6eaa" />
 <img width="256" height="256" alt="image" src="https://github.com/user-attachments/assets/f4121897-00ca-44d0-8fdb-bdd404c4051f" />  
 
-` 0:0, 22:0, 44:1 ` it means 0-22f still current latent, blend to refine latent from 22f to 44f. You can change how fast or slow depends you needs.
+[Kwyframe Mask ] ` 0:1, 22:0, 30:1 ` keep first 2 default, you can change 30f value, this ensure character keep the same at start (after refine) to connect to previous shot.
+[Blend Latent By Frames ] ` 0:0, 22:0, 44:1 ` it means 0-22f still current latent, blend to refine latent from 22f to 44f. You can change how fast or slow depends you needs.
 
 ## Current Limitations:
 
