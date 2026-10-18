@@ -48,6 +48,7 @@ https://www.reddit.com/r/StableDiffusion/comments/1wdkdvi/motioncontext_degradat
 
 ## Workflow:
 <img width="2937" height="1064" alt="image" src="https://github.com/user-attachments/assets/e5e1e61e-d986-493b-888e-f0a9e9f7beb5" />
+<img width="562" height="256" alt="image" src="https://github.com/user-attachments/assets/b14420f8-d3f0-4243-befb-6a2a8e1bc239" />
 <img width="342" height="147" alt="image" src="https://github.com/user-attachments/assets/16ffd461-2911-4e68-bfc8-f5d099d95aa3" />
 
 ## Nodes: 
