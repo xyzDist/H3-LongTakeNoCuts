@@ -26,7 +26,7 @@ Each segment loads the previous latent as ground truth. Every generation introdu
 ## My Solution to H3 Degradation
 
 <details>
-<summary> My posts in Reddit for more information </summary>
+<summary> some of my posts in Reddit </summary>
 https://www.reddit.com/r/StableDiffusion/comments/1x6jui1/h3_longtakenocuts_straight_3mins_video_case_study/  
 https://www.reddit.com/r/StableDiffusion/comments/1x0nbr5/h3_degradation_my_turn_attempts_to_fixing/  
 https://www.reddit.com/r/StableDiffusion/comments/1wo1iqw/h3_oneshotnocuts_new_test/  
