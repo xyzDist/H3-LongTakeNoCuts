@@ -34,7 +34,7 @@ https://www.reddit.com/r/StableDiffusion/comments/1wdkdvi/motioncontext_degradat
 
 </details>
 
-### Core Idea: add additional Resample (Refine), then Blend Back into Latent.
+### Core Simple Idea: add additional Resample (Refine), then Blend Back into Latent.
 1. **Refine Resample:**
    - An additional sampling stage with only a few steps.
    - Denoising at 0.5-0.6 restores character details and fixes waxy / burnt look and degradation.
