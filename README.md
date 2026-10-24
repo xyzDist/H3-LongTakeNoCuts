@@ -80,7 +80,7 @@ Make sure it is from **NikoDemon80**
 ## Custom Nodes Used in the Workflow
 https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context \
 https://github.com/kijai/ComfyUI-KJNodes \
-https://github.com/yolain/ComfyUI-Easy-Use (optional)
+https://github.com/yolain/ComfyUI-Easy-Use  
 
 ## Installation
 In your `custom_nodes` folder, run:
